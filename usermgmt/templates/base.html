@@ -1,11 +1,228 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Pravaah</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Document</title>
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
   </head>
+
   <body>
-    {% block content %}{% endblock %}
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4 py-3">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#"> Navbar </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Navbar Links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-2">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"> Home </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="#"> Link </a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#"> Action </a>
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="#"> Another action </a>
+                </li>
+
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
+
+                <li>
+                  <a class="dropdown-item" href="#"> Something else here </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link disabled" aria-disabled="true"> Disabled </a>
+            </li>
+          </ul>
+
+          <!-- Search Form -->
+          <form class="d-flex gap-2" role="search">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+            />
+
+            <button class="btn btn-outline-success" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Messages -->
+    <div class="container mt-3">
+      {% if messages %} {% for message in messages %}
+
+      <div class="alert alert-success">{{ message }}</div>
+
+      {% endfor %} {% endif %}
+    </div>
+
+    <!-- Main Content -->
+    <div class="container mt-4">{% block content %} {% endblock %}</div>
+
+    <!-- Sidebar -->
+    {% block sidebar %} {% endblock %}
+
+    <!-- Footer -->
+    <footer
+      class="text-center text-white mt-5"
+      style="background-color: #3a1616"
+    >
+      <!-- Grid container -->
+      <div class="container">
+        <!-- Links Section -->
+        <section>
+          <div class="row text-center d-flex justify-content-center pt-5">
+            <div class="col-md-2 mb-3">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="#!" class="text-white text-decoration-none">
+                  About us
+                </a>
+              </h6>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="#!" class="text-white text-decoration-none">
+                  Products
+                </a>
+              </h6>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="#!" class="text-white text-decoration-none">
+                  Awards
+                </a>
+              </h6>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="#!" class="text-white text-decoration-none"> Help </a>
+              </h6>
+            </div>
+
+            <div class="col-md-2 mb-3">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="#!" class="text-white text-decoration-none">
+                  Contact
+                </a>
+              </h6>
+            </div>
+          </div>
+        </section>
+
+        <hr />
+
+        <!-- Text Section -->
+        <section>
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+              <p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt
+                distinctio earum repellat quaerat voluptatibus placeat nam,
+                commodi optio pariatur est quia magnam eum harum corrupti dicta,
+                aliquam sequi voluptate quas.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Social Media -->
+        <section class="text-center pb-4">
+          <a href="" class="text-white me-4">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+
+          <a href="" class="text-white me-4">
+            <i class="fab fa-twitter"></i>
+          </a>
+
+          <a href="" class="text-white me-4">
+            <i class="fab fa-google"></i>
+          </a>
+
+          <a href="" class="text-white me-4">
+            <i class="fab fa-instagram"></i>
+          </a>
+
+          <a href="" class="text-white me-4">
+            <i class="fab fa-linkedin"></i>
+          </a>
+
+          <a href="" class="text-white me-4">
+            <i class="fab fa-github"></i>
+          </a>
+        </section>
+      </div>
+
+      <!-- Copyright -->
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2020 Copyright:
+
+        <a
+          class="text-white text-decoration-none"
+          href="https://mdbootstrap.com/"
+        >
+          MDBootstrap.com
+        </a>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
