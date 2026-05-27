@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2 class="mb-4">
+
+    Activity Dashboard
+
+</h2>
+
+<!-- STATS -->
+
+<div class="row mb-4">
+
+    <!-- TOTAL USERS -->
+
+    <div class="col-md-3">
+
+        <div class="card text-white bg-primary shadow">
+
+            <div class="card-body">
+
+                <h5>
+                    Total Users
+                </h5>
+
+                <h2>
+
+                    {{ total_users }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOTAL LOGS -->
+
+    <div class="col-md-3">
+
+        <div class="card text-white bg-success shadow">
+
+            <div class="card-body">
+
+                <h5>
+                    Total Logs
+                </h5>
+
+                <h2>
+
+                    {{ total_logs }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOTAL ROLES -->
+
+    <div class="col-md-3">
+
+        <div class="card text-white bg-warning shadow">
+
+            <div class="card-body">
+
+                <h5>
+                    Total Roles
+                </h5>
+
+                <h2>
+
+                    {{ total_roles }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TOTAL LOGINS -->
+
+    <div class="col-md-3">
+
+        <div class="card text-white bg-danger shadow">
+
+            <div class="card-body">
+
+                <h5>
+                    Total Logins
+                </h5>
+
+                <h2>
+
+                    {{ login_count }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- RECENT ACTIVITIES -->
+
+<div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+
+        Recent Activities
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-hover">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        User
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                    <th>
+                        IP Address
+                    </th>
+
+                    <th>
+                        Time
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for log in recent_logs %}
+
+                <tr>
+
+                    <td>
+
+                        {{ log.user.username }}
+
+                    </td>
+
+                    <td>
+
+                        {{ log.action }}
+
+                    </td>
+
+                    <td>
+
+                        {{ log.ip_address }}
+
+                    </td>
+
+                    <td>
+
+                        {{ log.created_at }}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- CHART -->
+
+<div class="card shadow mt-4">
+
+    <div class="card-header bg-primary text-white">
+
+        System Overview
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="dashboardChart">
+
+        </canvas>
+
+    </div>
+
+</div>
+
+<!-- CHART JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js">
+
+</script>
+
+<script>
+
+const ctx = document.getElementById(
+    'dashboardChart'
+);
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+
+            'Users',
+            'Logs',
+            'Roles',
+            'Logins'
+
+        ],
+
+        datasets: [{
+
+            label: 'System Data',
+
+            data: [
+
+                {{ total_users }},
+                {{ total_logs }},
+                {{ total_roles }},
+                {{ login_count }}
+
+            ],
+
+            borderWidth: 1
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        scales: {
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

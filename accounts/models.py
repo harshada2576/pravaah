@@ -1,55 +1,37 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-
 class Role(models.Model):
-
     role_id = models.AutoField(primary_key=True)
-
     role_name = models.CharField(
         max_length=100,
         unique=True
     )
-
     description = models.TextField()
-
     is_active = models.BooleanField(
         default=True
     )
-
     class Meta:
         db_table = 'roles'
-
     def __str__(self):
         return self.role_name
-
-
 class Permission(models.Model):
-
     permission_id = models.AutoField(
         primary_key=True
     )
-
     permission_name = models.CharField(
         max_length=100,
         unique=True
     )
-
     description = models.TextField()
-
     class Meta:
         db_table = 'permissions'
-
     def __str__(self):
         return self.permission_name
-
-
 class User(AbstractUser):
 
     user_id = models.AutoField(
         primary_key=True
     )
-
     role = models.ForeignKey(
         Role,
         on_delete=models.SET_NULL,
@@ -57,21 +39,17 @@ class User(AbstractUser):
         blank=True,
         db_column='role_id'
     )
-
     mobile = models.CharField(
         max_length=15,
         blank=True
     )
-
     status = models.CharField(
         max_length=20,
         default='Active'
     )
-
     created_at = models.DateTimeField(
         auto_now_add=True
     )
-
     updated_at = models.DateTimeField(
         auto_now=True
     )
