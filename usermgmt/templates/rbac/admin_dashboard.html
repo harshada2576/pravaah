@@ -1,3 +1,44 @@
-{% extends 'base.html' %} {% block content %}
-<!-- Admin dashboard template -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>RBAC Administration Dashboard</h2>
+        <span class="badge bg-primary">Security Module</span>
+    </div>
+
+    <p class="text-muted">Welcome to the central Role-Based Access Control configuration panel. Use the modules below to manage access permissions across the suite.</p>
+
+    <div class="row g-4 mt-2">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa-solid var(--fa-user-shield) fa-shield-halved me-2 text-primary"></i> Roles Management</h5>
+                    <p class="card-text text-muted small">Configure application roles such as Administrator, Trainer, and Participant.</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View Roles List</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa-solid fa-key me-2 text-success"></i> Permission System</h5>
+                    <p class="card-text text-muted small">Review individual operation capability keys and action flags assigned across components.</p>
+                    <a href="#" class="btn btn-sm btn-outline-success">Manage Permissions</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa-solid fa-table-cells me-2 text-warning"></i> Access Control Matrix</h5>
+                    <p class="card-text text-muted small">Map granular capabilities directly across security profiles instantly.</p>
+                    <a href="#" class="btn btn-sm btn-outline-warning">Open Matrix mapping</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

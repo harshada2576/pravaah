@@ -1,3 +1,33 @@
-{% extends 'base.html' %} {% block content %}
-<!-- Role form template -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 600px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Configure Role Parameters</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="roleName" class="form-label fw-bold small">Role UI Name</label>
+                    <input type="text" class="form-control" id="roleName" placeholder="e.g., Hostel Manager" required>
+                    <div class="form-text text-muted">The friendly display name visible within standard administrative views.</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="roleSlug" class="form-label fw-bold small">System Codename String</label>
+                    <input type="text" class="form-control" id="roleSlug" placeholder="e.g., hostel_manager" required>
+                    <div class="form-text text-muted">Unique key tag identifier used inside core middleware backend rule decorators.</div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="#" class="btn btn-outline-secondary">Discard Changes</a>
+                    <button type="submit" class="btn btn-primary">Save Role Configuration</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

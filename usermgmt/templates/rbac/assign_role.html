@@ -1,3 +1,48 @@
-{% extends 'base.html' %} {% block content %}
-<!-- Assign role template -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4" style="max-width: 650px;">
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Attach Identity Profiles to Security Groups</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <label for="userSelect" class="form-label fw-bold small">Select Target User Profile</label>
+                    <select class="form-select" id="userSelect" required>
+                        <option value="" disabled selected>Choose user account profile...</option>
+                        <option value="1">Gaurav Ghude (gaurav@example.com)</option>
+                        <option value="2">Harshada (harshada@example.com)</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold small d-block mb-2">Assign Target Security Groups</label>
+                    
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="admin" id="roleAdmin">
+                        <label class="form-check-input-label" for="roleAdmin">
+                            <strong>System Administrator</strong> <span class="text-muted d-block small">Full functional root execution authority across system boundaries.</span>
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" value="trainer" id="roleTrainer">
+                        <label class="form-check-input-label" for="roleTrainer">
+                            <strong>Trainer Operator</strong> <span class="text-muted d-block small">Permits module access regarding material configuration settings.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a href="#" class="btn btn-outline-secondary">Cancel Assignment</a>
+                    <button type="submit" class="btn btn-success">Update Group Assignments</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

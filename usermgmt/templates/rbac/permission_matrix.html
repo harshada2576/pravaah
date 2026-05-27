@@ -1,3 +1,43 @@
-{% extends 'base.html' %} {% block content %}
-<!-- Permission matrix template -->
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="mb-4">
+        <h2>Global Operational Access Control Matrix</h2>
+        <p class="text-muted small">Cross-reference view showing active validation rules mapped across roles.</p>
+    </div>
+
+    <div class="table-responsive bg-white border rounded p-3">
+        <table class="table table-bordered align-middle text-center mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-start" style="width: 40%">Capability Permission Scope Token</th>
+                    <th style="width: 20%">Administrator</th>
+                    <th style="width: 20%">Trainer</th>
+                    <th style="width: 20%">Participant</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-start"><code>usermgmt.can_view_admin_dashboard</code></td>
+                    <td><i class="fa-solid fa-circle-check text-success fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-xmark text-danger fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-xmark text-danger fa-xl"></i></td>
+                </tr>
+                <tr>
+                    <td class="text-start"><code>coursemgmt.can_modify_course</code></td>
+                    <td><i class="fa-solid fa-circle-check text-success fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-check text-success fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-xmark text-danger fa-xl"></i></td>
+                </tr>
+                <tr>
+                    <td class="text-start"><code>hostelmgmt.view_allotment</code></td>
+                    <td><i class="fa-solid fa-circle-check text-success fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-xmark text-danger fa-xl"></i></td>
+                    <td><i class="fa-solid fa-circle-check text-success fa-xl"></i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
