@@ -38,60 +38,39 @@ class User(AbstractUser):
         return f"{self.username} ({self.email})"
 
 
-class RBACPermissionProxy(models.Model):
+class RBACPermissionProxy(Permission):
     """
     TABLE 2 & 3: roles & permissions Configuration
-    
-    NOTE ON REPOSITORY NORMALIZATION:
-    Django provides two native database tables out-of-the-box:
-      - auth_group (Which acts exactly as your system 'roles' table)
-      - auth_permission (Which acts exactly as your system 'permissions' table)
-    
-    Django also automatically manages the junction join tables:
-      - user_roles (via the 'groups' ManyToMany attribute on your User model)
-      - role_permissions (via the 'permissions' ManyToMany attribute on the Group model)
-    
-    This proxy model registers your custom system scopes into the core 
-    permissions engine without adding clutter to your physical DB schemas.
+    Proxy model registers system scopes into core permissions engine.
     """
     class Meta:
-        managed = False  # Tells Django not to create a separate physical layout table
-        default_permissions = ()  # Disables default model CRUD hooks
-        
-        permissions = [
-            # --- Higher-Level / Administrative Capabilities (Person 1 & 3) ---
+        proxy = True
+        permissions = (
+            # --- Higher-Level / Administrative Capabilities ---
             ('can_view_admin_dashboard', 'Can view central security dashboard layout'),
-            ('can_view_activity_dashboard', 'Can view tracking activity summary visuals'),
             ('can_view_permission_matrix', 'Can view global cross-reference matrix grid'),
             ('can_modify_permissions', 'Can alter granular privileges or override tokens'),
-            ('can_manage_roles', 'Can create, update, or delete system groups (roles)'),
-            ('can_assign_roles', 'Can map user accounts to defined groups (roles)'),
+            ('can_manage_roles', 'Can create, update, or delete system groups'),
+            ('can_assign_roles', 'Can map user accounts to defined groups'),
             
-            # --- Management Division Tokens (Person 3) ---
+            # --- Management Division Tokens ---
             ('can_view_management_reports', 'Can read high-level analytical business summaries'),
             ('can_approve_requests', 'Can authorize institutional operational overrides'),
             
-            # --- Accounts / Finance Division Tokens (Person 1 & 3) ---
+            # --- Accounts / Finance Division Tokens ---
             ('can_view_finance_dashboard', 'Can read accounting ledgers and payment histories'),
-            ('can_manage_finance', 'Can process invoices and update payment parameters (Team 6)'),
+            ('can_manage_finance', 'Can process invoices and update payment parameters'),
             
-            # --- Quality Assurance (QA) Division Tokens (Person 3) ---
+            # --- Quality Assurance (QA) Division Tokens ---
             ('can_view_qa_logs', 'Can read automated testing output metrics and system reports'),
             ('can_manage_qa_tickets', 'Can log, modify, or track software verification modules'),
             
-            # --- Cross-Access Core Operational Module Permissions (Person 1 & 3) ---
-            ('can_manage_students', 'Can perform operations on student profiles (Team 2)'),
+            # --- Core Lower-Level Operational Read Permissions ---
             ('can_view_student_profiles', 'Can read student records and profiles (Lower Level Access)'),
-            
-            ('can_manage_trainers', 'Can perform operations on trainer profiles (Team 3)'),
             ('can_view_trainer_profiles', 'Can read trainer contact parameters (Lower Level Access)'),
-            
-            ('can_manage_courses', 'Can update training programs and syllabus details (Team 4)'),
             ('can_view_course_details', 'Can read syllabus blueprints and batch timings (Lower Level Access)'),
-            
-            ('can_manage_hostels', 'Can allocate or modify room configurations (Team 5)'),
             ('can_view_hostel_status', 'Can read room vacancy layouts and allocation maps (Lower Level Access)'),
-        ]
+        )
 
 
 class AuditLog(models.Model):

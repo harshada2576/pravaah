@@ -30,12 +30,13 @@ def _redirect_if_session_expired(request):
 # =========================================================================
 
 def login_view(request):
+    # Handle login form POST and render login template
     if request.method == 'POST':
-        username_input = request.POST.get('username', '').strip()
+        username_input = (request.POST.get('username') or request.POST.get('email', '')).strip()
         password = request.POST.get('password', '')
         remember = request.POST.get('remember')
 
-        # Brute-force verification mitigation per-session
+        # Simple brute-force protection per-session
         failures = request.session.get('login_failures', {})
         entry = failures.get(username_input, {'count': 0, 'first': None})
         first_ts = entry.get('first')
@@ -43,7 +44,7 @@ def login_view(request):
             messages.error(request, 'Too many failed login attempts. Try again later.')
             return render(request, 'auth/login.html')
 
-        # Resolve email strings to native username handle
+        # Allow login by email: lookup username if input looks like email
         username = username_input
         if '@' in username_input:
             try:
@@ -57,18 +58,19 @@ def login_view(request):
             if not user.is_active:
                 messages.error(request, 'Account inactive. Please verify your email or contact support.')
                 return render(request, 'auth/login.html')
-            if not user.is_email_verified:
+            if not user.is_superuser and not user.is_staff and not user.is_email_verified:
                 messages.error(request, 'Email not verified. Please check your inbox or resend verification.')
                 return render(request, 'auth/login.html')
 
             login(request, user)
             
-            # Contextual timeout configurations
+            # Session expiry handling
             if remember:
                 request.session.set_expiry(1209600)  # 2 weeks
             else:
-                request.session.set_expiry(0)  # Browser closing state
+                request.session.set_expiry(0)  # Browser close
 
+            # Audit log
             AuditLog.objects.create(
                 user=user, 
                 action='Login Success', 
@@ -76,18 +78,27 @@ def login_view(request):
                 browser_agent=request.META.get('HTTP_USER_AGENT', '')
             )
 
+            # Reset failures
             if username_input in failures:
                 failures.pop(username_input)
                 request.session['login_failures'] = failures
 
-            return redirect('usermgmt:admin_dashboard')
+            # Dynamic Role-Based Redirect Gateways
+            groups = list(user.groups.values_list('name', flat=True))
+            if user.is_superuser or 'Super Admin' in groups or 'System Admin' in groups:
+                return redirect('usermgmt:admin_dashboard')
+                
+            # Normal users drop cleanly onto their standard home view to prevent hitting RBAC blocks
+            return redirect('usermgmt:user_home')
         else:
+            # Increment failure count
             entry['count'] = entry.get('count', 0) + 1
             if not entry.get('first'):
                 entry['first'] = timezone.now().timestamp()
             failures[username_input] = entry
             request.session['login_failures'] = failures
             
+            # Audit
             AuditLog.objects.create(
                 user=None, 
                 action=f'Login Failed for {username_input}', 
@@ -97,8 +108,6 @@ def login_view(request):
             messages.error(request, 'Invalid username or password')
 
     return render(request, 'auth/login.html')
-
-
 def register_view(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name', '').strip()
@@ -358,6 +367,7 @@ def verify_email_view(request, uidb64=None, token=None):
 # 3. PROFILE & PERSONAL PORTAL DASHBOARD (Person 2)
 # =========================================================================
 
+@login_required
 def home(request):
     return render(request, 'profile/user_dashboard.html')
 
@@ -488,7 +498,7 @@ def users_list(request):
         'page_obj': page_obj,
         'search': search
     }
-    return render(request, 'profile/user_dashboard.html', context)
+    return render(request, 'rbac/users_list.html', context)
 
 
 @login_required
@@ -543,6 +553,7 @@ def activity_dashboard(request):
 # 5. ROLE-BASED ACCESS CONTROL (RBAC) ADMIN WORKFLOWS (Person 1 & 3)
 # =========================================================================
 
+@login_required
 def admin_dashboard_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -557,6 +568,7 @@ def admin_dashboard_view(request):
     return render(request, 'rbac/admin_dashboard.html', context)
 
 
+@login_required
 def roles_list_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -566,6 +578,7 @@ def roles_list_view(request):
     return render(request, 'rbac/roles_list.html', {'roles': roles})
 
 
+@login_required
 def role_form_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -580,6 +593,7 @@ def role_form_view(request):
     return render(request, 'rbac/role_form.html')
 
 
+@login_required
 def permissions_list_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -589,6 +603,7 @@ def permissions_list_view(request):
     return render(request, 'rbac/permissions_list.html', {'permissions': permissions})
 
 
+@login_required
 def assign_role_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -613,6 +628,7 @@ def assign_role_view(request):
     return render(request, 'rbac/assign_role.html', {'users': users, 'roles': roles})
 
 
+@login_required
 def assign_permissions_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -623,6 +639,7 @@ def assign_permissions_view(request):
     return render(request, 'rbac/assign_permissions.html', {'roles': roles, 'permissions': permissions})
 
 
+@login_required
 def permission_matrix_view(request):
     redirect_response = _redirect_if_session_expired(request)
     if redirect_response:
@@ -648,4 +665,27 @@ def permission_matrix_view(request):
             role.permissions.set(perms_to_set)
             
         messages.success(request, "Global Permission Matrix updated successfully!")
-        return redirect('usermgmt:permission_
+        return redirect('usermgmt:permission_matrix')
+
+    return render(request, 'rbac/permission_matrix.html', {'roles': roles, 'permissions': permissions})
+
+
+@login_required
+def users_list_view(request):
+    redirect_response = _redirect_if_session_expired(request)
+    if redirect_response:
+        return redirect_response
+        
+    selected_role_id = request.GET.get('role')
+    roles = Group.objects.all()
+    users = User.objects.all()
+    
+    if selected_role_id:
+        users = users.filter(groups__id=selected_role_id)
+        
+    context = {
+        'users': users,
+        'roles': roles,
+        'selected_role': int(selected_role_id) if selected_role_id and selected_role_id.isdigit() else None
+    }
+    return render(request, 'rbac/users_list.html', context)

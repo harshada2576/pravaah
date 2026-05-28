@@ -116,7 +116,13 @@
           </form>
           
           {% if user.is_authenticated %}
-            <ul class="navbar-nav ms-2">
+            <ul class="navbar-nav ms-2 align-items-center gap-2">
+              <li class="nav-item">
+                <a class="nav-link text-white d-flex align-items-center gap-1" href="{% url 'usermgmt:profile' %}">
+                  <i class="fa-solid fa-user-circle"></i>
+                  <span>Profile ({{ user.username }})</span>
+                </a>
+              </li>
               <li class="nav-item">
                 <a class="btn btn-sm btn-outline-danger pt-2 px-3 align-middle text-white" href="{% url 'usermgmt:logout' %}">
                   <i class="fa-solid fa-power-off me-1"></i> Logout
@@ -228,7 +234,7 @@
 
       <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
         © 2026 Copyright: 
-        <a class="text-white text-decoration-none fw-bold" href="#">PRAVAAH ERP System</a>
+        <a class="text-white text-decoration-none fw-bold" href="{% url 'usermgmt:user_home' %}">PRAVAAH ERP System</a>
       </div>
     </footer>
 
