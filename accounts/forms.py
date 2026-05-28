@@ -31,3 +31,9 @@ class ProfileEditForm(forms.ModelForm):
                 }
             )
         }
+       # 'first_name' : forms.TextInput(
+            #attrs={
+            #    'class' : 'form-control'
+            
+           # }
+      #  )

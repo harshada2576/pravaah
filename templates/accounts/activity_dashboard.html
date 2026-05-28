@@ -1,3 +1,4 @@
+```html
 {% extends 'base.html' %}
 
 {% block content %}
@@ -8,7 +9,7 @@
 
 </h2>
 
-<!-- STATS -->
+<!-- STATS CARDS -->
 
 <div class="row mb-4">
 
@@ -25,9 +26,7 @@
                 </h5>
 
                 <h2>
-
                     {{ total_users }}
-
                 </h2>
 
             </div>
@@ -49,9 +48,7 @@
                 </h5>
 
                 <h2>
-
                     {{ total_logs }}
-
                 </h2>
 
             </div>
@@ -73,9 +70,7 @@
                 </h5>
 
                 <h2>
-
                     {{ total_roles }}
-
                 </h2>
 
             </div>
@@ -97,9 +92,7 @@
                 </h5>
 
                 <h2>
-
                     {{ login_count }}
-
                 </h2>
 
             </div>
@@ -112,7 +105,7 @@
 
 <!-- RECENT ACTIVITIES -->
 
-<div class="card shadow">
+<div class="card shadow mb-4">
 
     <div class="card-header bg-dark text-white">
 
@@ -128,21 +121,10 @@
 
                 <tr>
 
-                    <th>
-                        User
-                    </th>
-
-                    <th>
-                        Action
-                    </th>
-
-                    <th>
-                        IP Address
-                    </th>
-
-                    <th>
-                        Time
-                    </th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>IP Address</th>
+                    <th>Time</th>
 
                 </tr>
 
@@ -155,26 +137,30 @@
                 <tr>
 
                     <td>
-
                         {{ log.user.username }}
-
                     </td>
 
                     <td>
-
                         {{ log.action }}
-
                     </td>
 
                     <td>
-
                         {{ log.ip_address }}
-
                     </td>
 
                     <td>
-
                         {{ log.created_at }}
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+
+                        No recent activities found
 
                     </td>
 
@@ -190,9 +176,9 @@
 
 </div>
 
-<!-- CHART -->
+<!-- SYSTEM OVERVIEW CHART -->
 
-<div class="card shadow mt-4">
+<div class="card shadow mb-4">
 
     <div class="card-header bg-primary text-white">
 
@@ -202,9 +188,61 @@
 
     <div class="card-body">
 
-        <canvas id="dashboardChart">
+        <canvas id="dashboardChart"></canvas>
 
-        </canvas>
+    </div>
+
+</div>
+
+<!-- ROLE DISTRIBUTION CHART -->
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-dark text-white">
+
+        Role Distribution
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="roleChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- USER STATUS CHART -->
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-success text-white">
+
+        User Status
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="statusChart"></canvas>
+
+    </div>
+
+</div>
+
+<!-- AUDIT ACTION CHART -->
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-info text-white">
+
+        Audit Actions
+
+    </div>
+
+    <div class="card-body">
+
+        <canvas id="auditChart"></canvas>
 
     </div>
 
@@ -212,59 +250,63 @@
 
 <!-- CHART JS -->
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js">
-
-</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 
-const ctx = document.getElementById(
-    'dashboardChart'
-);
+// =====================
+// SYSTEM OVERVIEW
+// =====================
 
-new Chart(ctx, {
+new Chart(
 
-    type: 'bar',
+    document.getElementById('dashboardChart'),
 
-    data: {
+    {
 
-        labels: [
+        type: 'bar',
 
-            'Users',
-            'Logs',
-            'Roles',
-            'Logins'
+        data: {
 
-        ],
+            labels: [
 
-        datasets: [{
-
-            label: 'System Data',
-
-            data: [
-
-                {{ total_users }},
-                {{ total_logs }},
-                {{ total_roles }},
-                {{ login_count }}
+                'Users',
+                'Logs',
+                'Roles',
+                'Logins'
 
             ],
 
-            borderWidth: 1
+            datasets: [{
 
-        }]
+                label: 'System Data',
 
-    },
+                data: [
 
-    options: {
+                    {{ total_users }},
+                    {{ total_logs }},
+                    {{ total_roles }},
+                    {{ login_count }}
 
-        responsive: true,
+                ],
 
-        scales: {
+                borderWidth: 1
 
-            y: {
+            }]
 
-                beginAtZero: true
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
 
             }
 
@@ -272,8 +314,148 @@ new Chart(ctx, {
 
     }
 
-});
+);
+
+
+// =====================
+// ROLE DISTRIBUTION
+// =====================
+
+new Chart(
+
+    document.getElementById('roleChart'),
+
+    {
+
+        type: 'pie',
+
+        data: {
+
+            labels: [
+
+                'Admin',
+                'Manager',
+                'QA'
+
+            ],
+
+            datasets: [{
+
+                data: [
+
+                    {{ admin_count }},
+                    {{ manager_count }},
+                    {{ qa_count }}
+
+                ]
+
+            }]
+
+        }
+
+    }
+
+);
+
+
+// =====================
+// USER STATUS
+// =====================
+
+new Chart(
+
+    document.getElementById('statusChart'),
+
+    {
+
+        type: 'doughnut',
+
+        data: {
+
+            labels: [
+
+                'Active',
+                'Inactive'
+
+            ],
+
+            datasets: [{
+
+                data: [
+
+                    {{ active_users }},
+                    {{ inactive_users }}
+
+                ]
+
+            }]
+
+        }
+
+    }
+
+);
+
+
+// =====================
+// AUDIT ACTIONS
+// =====================
+
+new Chart(
+
+    document.getElementById('auditChart'),
+
+    {
+
+        type: 'bar',
+
+        data: {
+
+            labels: [
+
+                'Login',
+                'Logout',
+                'Profile Updated'
+
+            ],
+
+            datasets: [{
+
+                label: 'Audit Activity',
+
+                data: [
+
+                    {{ login_actions }},
+                    {{ logout_actions }},
+                    {{ update_actions }}
+
+                ]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
 
 </script>
 
 {% endblock %}
+```

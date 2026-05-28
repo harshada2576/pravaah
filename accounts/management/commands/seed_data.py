@@ -119,9 +119,6 @@ class Command(BaseCommand):
 
             users.append(user)
 
-        # -------------------------
-        # Audit Logs
-        # -------------------------
 
         actions = [
 
