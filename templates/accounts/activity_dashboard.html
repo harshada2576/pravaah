@@ -1,33 +1,86 @@
-```html
 {% extends 'base.html' %}
 
 {% block content %}
 
-<h2 class="mb-4">
+<div class="container-fluid mt-4">
 
-    Activity Dashboard
+    <h2 class="mb-4">
 
-</h2>
+        Activity Dashboard
 
-<!-- STATS CARDS -->
+    </h2>
 
-<div class="row mb-4">
+    <!-- MAIN STATS -->
 
-    <!-- TOTAL USERS -->
+    <div class="row mb-4">
 
-    <div class="col-md-3">
+        <!-- TOTAL USERS -->
 
-        <div class="card text-white bg-primary shadow">
+        <div class="col-md-3 mb-3">
 
-            <div class="card-body">
+            <div class="card text-white bg-primary shadow h-100">
 
-                <h5>
-                    Total Users
-                </h5>
+                <div class="card-body">
 
-                <h2>
-                    {{ total_users }}
-                </h2>
+                    <h6>Total Users</h6>
+
+                    <h2>{{ total_users }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL LOGS -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-success shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Total Logs</h6>
+
+                    <h2>{{ total_logs }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL ROLES -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-warning shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Total Roles</h6>
+
+                    <h2>{{ total_roles }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOTAL LOGINS -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card text-white bg-danger shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Total Logins</h6>
+
+                    <h2>{{ login_count }}</h2>
+
+                </div>
 
             </div>
 
@@ -35,21 +88,89 @@
 
     </div>
 
-    <!-- TOTAL LOGS -->
+    <!-- EXTRA ANALYTICS -->
 
-    <div class="col-md-3">
+    <div class="row mb-4">
 
-        <div class="card text-white bg-success shadow">
+        <!-- ACTIVE USERS -->
 
-            <div class="card-body">
+        <div class="col-md-3 mb-3">
 
-                <h5>
-                    Total Logs
-                </h5>
+            <div class="card bg-info text-white shadow h-100">
 
-                <h2>
-                    {{ total_logs }}
-                </h2>
+                <div class="card-body">
+
+                    <h6>Active Users</h6>
+
+                    <h2>{{ active_users_count }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FAILED LOGINS -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card bg-secondary text-white shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Failed Logins</h6>
+
+                    <h2>{{ failed_logins }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TOP ROLE -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card bg-dark text-white shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Top Role</h6>
+
+                    <h5>
+
+                        {% if top_role %}
+
+                            {{ top_role.role_name }}
+
+                        {% else %}
+
+                            N/A
+
+                        {% endif %}
+
+                    </h5>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- RECENT REGISTRATIONS -->
+
+        <div class="col-md-3 mb-3">
+
+            <div class="card bg-warning text-dark shadow h-100">
+
+                <div class="card-body">
+
+                    <h6>Recent Registrations</h6>
+
+                    <h2>{{ recent_registrations|length }}</h2>
+
+                </div>
 
             </div>
 
@@ -57,21 +178,69 @@
 
     </div>
 
-    <!-- TOTAL ROLES -->
+    <!-- RECENT USERS -->
 
-    <div class="col-md-3">
+    <div class="card shadow mb-4">
 
-        <div class="card text-white bg-warning shadow">
+        <div class="card-header bg-primary text-white">
 
-            <div class="card-body">
+            Recent Registrations
 
-                <h5>
-                    Total Roles
-                </h5>
+        </div>
 
-                <h2>
-                    {{ total_roles }}
-                </h2>
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Joined</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for user in recent_registrations %}
+
+                        <tr>
+
+                            <td>{{ user.username }}</td>
+
+                            <td>{{ user.email }}</td>
+
+                            <td>{{ user.status }}</td>
+
+                            <td>{{ user.created_at }}</td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4"
+                                class="text-center">
+
+                                No recent users found
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
 
             </div>
 
@@ -79,21 +248,69 @@
 
     </div>
 
-    <!-- TOTAL LOGINS -->
+    <!-- RECENT ACTIVITIES -->
 
-    <div class="col-md-3">
+    <div class="card shadow mb-4">
 
-        <div class="card text-white bg-danger shadow">
+        <div class="card-header bg-dark text-white">
 
-            <div class="card-body">
+            Recent Activities
 
-                <h5>
-                    Total Logins
-                </h5>
+        </div>
 
-                <h2>
-                    {{ login_count }}
-                </h2>
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover">
+
+                    <thead class="table-dark">
+
+                        <tr>
+
+                            <th>User</th>
+                            <th>Action</th>
+                            <th>IP Address</th>
+                            <th>Time</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for log in recent_logs %}
+
+                        <tr>
+
+                            <td>{{ log.user.username }}</td>
+
+                            <td>{{ log.action }}</td>
+
+                            <td>{{ log.ip_address }}</td>
+
+                            <td>{{ log.created_at }}</td>
+
+                        </tr>
+
+                        {% empty %}
+
+                        <tr>
+
+                            <td colspan="4"
+                                class="text-center">
+
+                                No recent activities found
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
 
             </div>
 
@@ -101,148 +318,117 @@
 
     </div>
 
-</div>
+    <!-- CHARTS -->
 
-<!-- RECENT ACTIVITIES -->
+    <div class="row">
 
-<div class="card shadow mb-4">
+        <!-- SYSTEM OVERVIEW -->
 
-    <div class="card-header bg-dark text-white">
+        <div class="col-md-6 mb-4">
 
-        Recent Activities
+            <div class="card shadow h-100">
 
-    </div>
+                <div class="card-header bg-primary text-white">
 
-    <div class="card-body">
+                    System Overview
 
-        <table class="table table-hover">
+                </div>
 
-            <thead>
+                <div class="card-body">
 
-                <tr>
+                    <div style="height:300px;">
 
-                    <th>User</th>
-                    <th>Action</th>
-                    <th>IP Address</th>
-                    <th>Time</th>
+                        <canvas id="dashboardChart"></canvas>
 
-                </tr>
+                    </div>
 
-            </thead>
+                </div>
 
-            <tbody>
+            </div>
 
-                {% for log in recent_logs %}
+        </div>
 
-                <tr>
+        <!-- ROLE DISTRIBUTION -->
 
-                    <td>
-                        {{ log.user.username }}
-                    </td>
+        <div class="col-md-6 mb-4">
 
-                    <td>
-                        {{ log.action }}
-                    </td>
+            <div class="card shadow h-100">
 
-                    <td>
-                        {{ log.ip_address }}
-                    </td>
+                <div class="card-header bg-dark text-white">
 
-                    <td>
-                        {{ log.created_at }}
-                    </td>
+                    Role Distribution
 
-                </tr>
+                </div>
 
-                {% empty %}
+                <div class="card-body">
 
-                <tr>
+                    <div style="height:300px;">
 
-                    <td colspan="4" class="text-center">
+                        <canvas id="roleChart"></canvas>
 
-                        No recent activities found
+                    </div>
 
-                    </td>
+                </div>
 
-                </tr>
+            </div>
 
-                {% endfor %}
-
-            </tbody>
-
-        </table>
+        </div>
 
     </div>
 
-</div>
+    <div class="row">
 
-<!-- SYSTEM OVERVIEW CHART -->
+        <!-- USER STATUS -->
 
-<div class="card shadow mb-4">
+        <div class="col-md-6 mb-4">
 
-    <div class="card-header bg-primary text-white">
+            <div class="card shadow h-100">
 
-        System Overview
+                <div class="card-header bg-success text-white">
 
-    </div>
+                    User Status
 
-    <div class="card-body">
+                </div>
 
-        <canvas id="dashboardChart"></canvas>
+                <div class="card-body">
 
-    </div>
+                    <div style="height:300px;">
 
-</div>
+                        <canvas id="statusChart"></canvas>
 
-<!-- ROLE DISTRIBUTION CHART -->
+                    </div>
 
-<div class="card shadow mb-4">
+                </div>
 
-    <div class="card-header bg-dark text-white">
+            </div>
 
-        Role Distribution
+        </div>
 
-    </div>
+        <!-- AUDIT ACTIONS -->
 
-    <div class="card-body">
+        <div class="col-md-6 mb-4">
 
-        <canvas id="roleChart"></canvas>
+            <div class="card shadow h-100">
 
-    </div>
+                <div class="card-header bg-info text-white">
 
-</div>
+                    Audit Actions
 
-<!-- USER STATUS CHART -->
+                </div>
 
-<div class="card shadow mb-4">
+                <div class="card-body">
 
-    <div class="card-header bg-success text-white">
+                    <div style="height:300px;">
 
-        User Status
+                        <canvas id="auditChart"></canvas>
 
-    </div>
+                    </div>
 
-    <div class="card-body">
+                </div>
 
-        <canvas id="statusChart"></canvas>
+            </div>
 
-    </div>
-
-</div>
-
-<!-- AUDIT ACTION CHART -->
-
-<div class="card shadow mb-4">
-
-    <div class="card-header bg-info text-white">
-
-        Audit Actions
-
-    </div>
-
-    <div class="card-body">
-
-        <canvas id="auditChart"></canvas>
+        </div>
 
     </div>
 
@@ -254,9 +440,7 @@
 
 <script>
 
-// =====================
 // SYSTEM OVERVIEW
-// =====================
 
 new Chart(
 
@@ -300,6 +484,8 @@ new Chart(
 
             responsive: true,
 
+            maintainAspectRatio: false,
+
             scales: {
 
                 y: {
@@ -317,9 +503,7 @@ new Chart(
 );
 
 
-// =====================
 // ROLE DISTRIBUTION
-// =====================
 
 new Chart(
 
@@ -351,6 +535,14 @@ new Chart(
 
             }]
 
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
         }
 
     }
@@ -358,9 +550,7 @@ new Chart(
 );
 
 
-// =====================
 // USER STATUS
-// =====================
 
 new Chart(
 
@@ -390,6 +580,14 @@ new Chart(
 
             }]
 
+        },
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false
+
         }
 
     }
@@ -397,9 +595,7 @@ new Chart(
 );
 
 
-// =====================
 // AUDIT ACTIONS
-// =====================
 
 new Chart(
 
@@ -429,7 +625,9 @@ new Chart(
                     {{ logout_actions }},
                     {{ update_actions }}
 
-                ]
+                ],
+
+                borderWidth: 1
 
             }]
 
@@ -438,6 +636,8 @@ new Chart(
         options: {
 
             responsive: true,
+
+            maintainAspectRatio: false,
 
             scales: {
 
@@ -458,4 +658,3 @@ new Chart(
 </script>
 
 {% endblock %}
-```
