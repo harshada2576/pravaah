@@ -22,6 +22,10 @@ pnpm-debug.log*
 .env.*
 !.env.example
 
+# Local secrets / keys
+secrets.json
+
+
 # Dependencies
 node_modules/
 
@@ -41,6 +45,28 @@ __pycache__/
 .mypy_cache/
 .venv/
 venv/
+
+# Django / SQLite
+db.sqlite3
+db.sqlite3-journal
+
+# Uploaded media (keep out of repo)
+media/
+
+# Collected static files
+/staticfiles/
+collectstatic/
+
+# Cookies and local browser artifacts
+cookies.txt
+
+# Celery
+celerybeat-schedule
+
+# Coverage
+htmlcov/
+.coverage
+.coverage.*
 
 # Package manager lock/state files (optional)
 .pnpm-store/

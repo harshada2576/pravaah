@@ -7,6 +7,7 @@
 			<div class="card-body p-4 p-md-5 text-center">
 				<h1 class="display-6 fw-bold mb-3">Session Expired</h1>
 				<p class="lead mb-4">Your session has expired due to inactivity. Please login again.</p>
+				<p class="text-muted mb-4">This is expected for protected pages after inactivity or manual logout. Please sign in to continue.</p>
 
 				<div class="text-muted mb-4">
 					<p class="mb-1">Your session may end because of inactivity timeout or other security reasons.</p>
@@ -15,6 +16,8 @@
 
 				<div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
 					<a href="{% url 'usermgmt:login' %}" class="btn btn-primary btn-lg px-4">Login Again</a>
+					<a href="{% url 'usermgmt:forgot_password' %}" class="btn btn-outline-secondary btn-lg px-4">Forgot Password?</a>
+					<a href="{% url 'usermgmt:verify_email' %}" class="btn btn-outline-secondary btn-lg px-4">Verify Email</a>
 					<a href="{% url 'usermgmt:home' %}" class="btn btn-outline-secondary btn-lg px-4">Back to Home</a>
 				</div>
 			</div>
