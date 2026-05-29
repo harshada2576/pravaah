@@ -17,8 +17,11 @@ urlpatterns = [
     # Mounted at root to flawlessly match internal app-level pathing definitions
     path('', include('usermgmt.urls')),
 
-    # --- Trainer Management & Accounts Module ---
-    path('trainers/', include('trainermgmt.urls')),
+    # --- Trainer Management & Billing Module ---
+    path('billing/', include('billingmgmt.urls')),
+    
+    # --- Proposal & Marketing Approvals Module ---
+    path('proposals/', include('proposalmgmt.urls')),
 ]
 
 # --- Media Uploads Asset Streamer Routing ---

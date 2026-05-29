@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     
     # Unified Module Registration Workspace
     'usermgmt',
-    'trainermgmt',
+    'billingmgmt',
+    'proposalmgmt',
 ]
 
 MIDDLEWARE = [

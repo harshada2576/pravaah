@@ -24,6 +24,12 @@ def _redirect_if_session_expired(request):
         return redirect('usermgmt:session_expired')
     return None
 
+def public_landing_view(request):
+    # If the user is already authenticated, redirect them to their dashboard
+    if request.user.is_authenticated:
+        return redirect('usermgmt:user_home')
+    return render(request, 'public_landing.html')
+
 
 # =========================================================================
 # 1. AUTHENTICATION & ACCESSIBILITY WORKFLOWS (Person 1)
