@@ -139,3 +139,5 @@ AUTH_USER_MODEL = 'usermgmt.User'
 
 # Authentication fallback routing URL
 LOGIN_URL = '/login/'
+
+SESSION_SAVE_EVERY_REQUEST = True

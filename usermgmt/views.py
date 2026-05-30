@@ -74,7 +74,7 @@ def login_view(request):
             if remember:
                 request.session.set_expiry(1209600)  # 2 weeks
             else:
-                request.session.set_expiry(0)  # Browser close
+                request.session.set_expiry(86400)    # 1 day (instead of browser close which drops easily)
 
             # Audit log
             AuditLog.objects.create(
